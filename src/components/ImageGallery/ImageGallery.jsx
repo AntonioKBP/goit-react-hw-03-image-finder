@@ -1,5 +1,5 @@
 import { ImagesList } from './ImageGallery.styled';
 
-export const ImageGallery = () => {
-  return <ImagesList class="gallery"></ImagesList>;
+export const ImageGallery = ({ children }) => {
+  return <ImagesList>{children}</ImagesList>;
 };

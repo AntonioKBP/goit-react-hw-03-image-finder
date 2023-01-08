@@ -3,17 +3,16 @@ import { Header, Form, SearchButton, Label, Input } from './SearchBar.styled';
 export const SearchBar = () => {
   return (
     <Header>
-      <Form class="form">
-        <SearchButton type="submit" class="button">
-          <span class="button-label">Search</span>
+      <Form>
+        <SearchButton type="submit">
+          <span>Search</span>
         </SearchButton>
 
         <Label>
           <Input
-            class="input"
             type="text"
             autocomplete="off"
-            autofocus
+            autoFocus
             placeholder="Search images and photos"
           />
         </Label>

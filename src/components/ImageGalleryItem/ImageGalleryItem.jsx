@@ -1,8 +1,8 @@
 import { ListItem, Image } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = () => {
+export const ImageGalleryItem = ({ fetchData }) => {
   return (
-    <ListItem class="gallery-item">
+    <ListItem>
       <Image src="" alt="" />
     </ListItem>
   );
