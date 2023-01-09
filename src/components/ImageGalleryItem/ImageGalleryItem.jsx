@@ -1,9 +1,20 @@
 import { ListItem, Image } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ fetchData }) => {
+export const ImageGalleryItem = ({ data }) => {
+  console.log(data);
   return (
-    <ListItem>
-      <Image src="" alt="" />
-    </ListItem>
+    <>
+      {data.map(item => (
+        <ListItem key={item.id}>
+          <Image src={item.webformatURL} alt={item.user} />
+        </ListItem>
+      ))}
+    </>
   );
 };
+
+// // {
+//   // /* <ListItem>
+//   //     <Image src="" alt="" />
+//   //   </ListItem> */
+// }

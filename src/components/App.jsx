@@ -8,43 +8,58 @@ import { Component } from 'react';
 
 import axios from 'axios';
 
+const KEY = '31349139-c34332f5cc1455d1f889740ec';
+
 export class App extends Component {
   state = {
-    data: [],
+    image: [],
     isLoading: false,
+    page: 1,
+    search: '',
   };
 
-  // fetchData = async (page = 1) => {
-  //   const data = await axios.get(
-  //     'https://pixabay.com/api/?q=cat&page=1&key=31349139-c34332f5cc1455d1f889740ec&image_type=photo&orientation=horizontal&per_page=12'
-  //   );
-  //   console.log(data);
-  // };
+  componentDidMount() {
+    console.log('mount');
+    this.fetchData({ page: 1 });
+  }
 
-  async componentDidMount() {
+  componentDidUpdate(_, prevState) {
+    console.log('update');
+    const { search } = this.state;
+    if (search !== prevState.search) {
+      this.fetchData({ search });
+    }
+  }
+
+  handleSearch = search => {
+    this.setState({ search });
+  };
+
+  fetchData = async ({ page = 1, search = '' }) => {
     try {
       const { data } = await axios.get(
-        'https://pixabay.com/api/?q=cat&page=1&key=31349139-c34332f5cc1455d1f889740ec&image_type=photo&orientation=horizontal&per_page=12'
+        `https://pixabay.com/api/?q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
       );
-      this.setState({ data });
+      this.setState(prevState => ({
+        image: [...prevState.image, ...data.hits],
+        imageHits: data,
+      }));
     } catch (error) {
     } finally {
       this.setState({ isLoading: false });
     }
-  }
+  };
 
   render() {
-    const { data } = this.state;
-    console.log(data);
+    const { image } = this.state;
+
     return (
       <>
-        <SearchBar />
-        {<ImageGallery>{<ImageGalleryItem />}</ImageGallery>}
+        <SearchBar onSubmit={this.handleSearch} />
+        {<ImageGallery>{<ImageGalleryItem data={image} />}</ImageGallery>}
         <Button />
         <Modal />
       </>
     );
   }
 }
-
-// 31349139-c34332f5cc1455d1f889740ec
