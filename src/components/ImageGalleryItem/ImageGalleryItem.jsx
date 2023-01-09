@@ -1,12 +1,16 @@
 import { ListItem, Image } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ data }) => {
+export const ImageGalleryItem = ({ data, onHandleModal }) => {
   console.log(data);
   return (
     <>
-      {data.map(item => (
-        <ListItem key={item.id}>
-          <Image src={item.webformatURL} alt={item.user} />
+      {data.map((item, index) => (
+        <ListItem key={item.index}>
+          <Image
+            src={item.webformatURL}
+            alt={item.user}
+            onClick={() => onHandleModal()}
+          />
         </ListItem>
       ))}
     </>

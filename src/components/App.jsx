@@ -3,7 +3,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
-// import { Audio } from 'react-loader-spinner';
+import { Loader } from './Loader/Loader';
 import { Component } from 'react';
 
 import axios from 'axios';
@@ -12,27 +12,53 @@ const KEY = '31349139-c34332f5cc1455d1f889740ec';
 
 export class App extends Component {
   state = {
+    data: null,
     image: [],
     isLoading: false,
+    showModal: false,
     page: 1,
     search: '',
+    perPage: 12,
   };
 
-  componentDidMount() {
-    console.log('mount');
-    this.fetchData({ page: 1 });
-  }
+  // componentDidMount() {
+  //   console.log('mount');
+  //   this.fetchData({ page: 1 });
+  // }
 
   componentDidUpdate(_, prevState) {
-    console.log('update');
+    if (
+      prevState.search !== this.state.search ||
+      prevState.page !== this.state.page
+    ) {
+      this.setState({ isLoading: true });
+    }
     const { search } = this.state;
     if (search !== prevState.search) {
       this.fetchData({ search });
     }
+
+    if (this.data?.total === 0) {
+      this.setState({ image: [] });
+    }
   }
 
   handleSearch = search => {
-    this.setState({ search });
+    this.setState({ search, page: 1, image: [] });
+  };
+
+  handleLoadMore = async () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  handleModal = () => {
+    this.toggleModal();
   };
 
   fetchData = async ({ page = 1, search = '' }) => {
@@ -51,14 +77,21 @@ export class App extends Component {
   };
 
   render() {
-    const { image } = this.state;
+    const { image, imageHits, isLoading, showModal } = this.state;
 
     return (
       <>
         <SearchBar onSubmit={this.handleSearch} />
-        {<ImageGallery>{<ImageGalleryItem data={image} />}</ImageGallery>}
-        <Button />
-        <Modal />
+        {
+          <ImageGallery>
+            {<ImageGalleryItem data={image} onHandleModal={this.handleModal} />}
+          </ImageGallery>
+        }
+        {image.length === 0 || imageHits.totalHits === image.length || (
+          <Button onClick={this.handleLoadMore} />
+        )}
+        {isLoading && <Loader />}
+        {showModal && <Modal onClose={this.toggleModal} />}
       </>
     );
   }
