@@ -13,6 +13,7 @@ const KEY = '31349139-c34332f5cc1455d1f889740ec';
 export class App extends Component {
   state = {
     image: [],
+    imageHits: [],
     isLoading: false,
     showModal: false,
     page: 1,
@@ -21,7 +22,8 @@ export class App extends Component {
     alt: '',
   };
 
-  componentDidUpdate(_, prevState) {
+  async componentDidUpdate(_, prevState) {
+    const { page, search } = this.state;
     if (
       prevState.search !== this.state.search ||
       prevState.page !== this.state.page
@@ -29,13 +31,24 @@ export class App extends Component {
       this.setState({ isLoading: true });
     }
 
-    const { search } = this.state;
-    if (search !== prevState.search) {
-      this.fetchData({ search });
-    }
+    try {
+      const { data } = await axios.get(
+        `https://pixabay.com/api/?q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
+      );
 
-    if (this.data?.total === 0) {
-      this.setState({ image: [] });
+      this.setState(
+        (prevState = {
+          image: [...prevState.image, ...data.hits],
+          imageHits: data,
+        })
+      );
+
+      if (data.total === 0) {
+        this.setState({ image: [] });
+      }
+    } catch (error) {
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -43,8 +56,10 @@ export class App extends Component {
     this.setState({ search, page: 1, image: [] });
   };
 
-  handleLoadMore = async () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+  loadMore = async () => {
+    this.setState(pS => ({
+      page: pS.page + 1,
+    }));
   };
 
   toggleModal = () => {
@@ -56,22 +71,6 @@ export class App extends Component {
   handleModal = (url, alt) => {
     this.toggleModal();
     this.setState({ url, alt });
-  };
-
-  fetchData = async () => {
-    const { search, page } = this.state;
-    try {
-      const { data } = await axios.get(
-        `https://pixabay.com/api/?q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-      );
-      this.setState(prevState => ({
-        image: [...prevState.image, ...data.hits],
-        imageHits: data,
-      }));
-    } catch (error) {
-    } finally {
-      this.setState({ isLoading: false });
-    }
   };
 
   render() {
@@ -87,7 +86,7 @@ export class App extends Component {
           </ImageGallery>
         }
         {image.length === 0 || imageHits.totalHits === image.length || (
-          <Button onClick={this.handleLoadMore} />
+          <Button onClick={this.loadMore} />
         )}
 
         {showModal && <Modal onClose={this.toggleModal} url={url} alt={alt} />}

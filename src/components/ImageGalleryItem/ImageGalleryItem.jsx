@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { ListItem, Image } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({ data, onHandleModal }) => {
@@ -14,6 +16,10 @@ export const ImageGalleryItem = ({ data, onHandleModal }) => {
       ))}
     </>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
 
 // // {
