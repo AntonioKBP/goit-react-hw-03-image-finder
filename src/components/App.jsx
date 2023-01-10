@@ -7,6 +7,7 @@ import { Loader } from './Loader/Loader';
 import { Component } from 'react';
 
 import axios from 'axios';
+import { requestHTTP } from './services/services';
 
 const KEY = '31349139-c34332f5cc1455d1f889740ec';
 
@@ -22,55 +23,29 @@ export class App extends Component {
     alt: '',
   };
 
-  async componentDidUpdate(_, prevState) {
-    const { page, search } = this.state;
-    if (
-      prevState.search !== this.state.search ||
-      prevState.page !== this.state.page
-    ) {
-      this.setState({ isLoading: true });
-    }
-
-    try {
-      const { data } = await axios.get(
-        `https://pixabay.com/api/?q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-      );
-
-      this.setState(
-        (prevState = {
-          image: [...prevState.image, ...data.hits],
-          imageHits: data,
-        })
-      );
-
-      if (data.total === 0) {
-        this.setState({ image: [] });
-      }
-    } catch (error) {
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
-  handleSearch = search => {
+  handleSearch = async search => {
     this.setState({ search, page: 1, image: [] });
   };
 
-  loadMore = async () => {
-    this.setState(pS => ({
-      page: pS.page + 1,
-    }));
-  };
-
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
-
-  handleModal = (url, alt) => {
-    this.toggleModal();
-    this.setState({ url, alt });
+  componentDidUpdate(_, prevState) {
+    const prevSearch = prevState.search;
+    const nextSearch = this.state.search;
+    if (prevSearch !== nextSearch) {
+    }
+  }
+  loadDataImg = async () => {
+    const { search, page } = this.state;
+    try {
+      const data = await requestHTTP(search, page);
+      data.hits.map(items => {
+        return this.setState(({ image }) => ({ image: [...image, items] }));
+      });
+      this.setState(({ page }) => ({ page: page + 1 }));
+    } catch (error) {
+      console.log('Error', error);
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   render() {
