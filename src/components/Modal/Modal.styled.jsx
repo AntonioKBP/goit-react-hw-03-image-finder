@@ -10,7 +10,7 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1200;
+  overflow: hidden;
 `;
 export const ModalWindow = styled.div`
   max-width: calc(100vw - 128px);
@@ -19,6 +19,7 @@ export const ModalWindow = styled.div`
 export const ModalImage = styled.img`
   max-width: 800px;
   max-height: 600px;
+  border-radius: 4px;
 `;
 
 export const ModalBtn = styled.button`

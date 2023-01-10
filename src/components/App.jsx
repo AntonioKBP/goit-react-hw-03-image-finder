@@ -6,10 +6,7 @@ import { Modal } from './Modal/Modal';
 import { Loader } from './Loader/Loader';
 import { Component } from 'react';
 
-import axios from 'axios';
 import { requestHTTP } from './services/services';
-
-const KEY = '31349139-c34332f5cc1455d1f889740ec';
 
 export class App extends Component {
   state = {
@@ -24,6 +21,7 @@ export class App extends Component {
   };
 
   handleSearch = async search => {
+    this.setState({ isLoading: true });
     this.setState({ search, page: 1, image: [] });
   };
 
@@ -31,6 +29,7 @@ export class App extends Component {
     const prevSearch = prevState.search;
     const nextSearch = this.state.search;
     if (prevSearch !== nextSearch) {
+      this.loadDataImg();
     }
   }
   loadDataImg = async () => {
@@ -48,20 +47,32 @@ export class App extends Component {
     }
   };
 
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  handleModal = (url, alt) => {
+    this.toggleModal();
+    this.setState({ url, alt });
+  };
+
   render() {
     const { image, imageHits, isLoading, showModal, url, alt } = this.state;
 
     return (
       <>
         <SearchBar onSubmit={this.handleSearch} />
-        {isLoading && <Loader />}
+
         {
           <ImageGallery>
             {<ImageGalleryItem data={image} onHandleModal={this.handleModal} />}
           </ImageGallery>
         }
+        {isLoading && <Loader />}
         {image.length === 0 || imageHits.totalHits === image.length || (
-          <Button onClick={this.loadMore} />
+          <Button onClick={this.loadDataImg} />
         )}
 
         {showModal && <Modal onClose={this.toggleModal} url={url} alt={alt} />}

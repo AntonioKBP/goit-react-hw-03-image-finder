@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
 export const LoadMoreButton = styled.button`
+  margin: 0 auto;
+  display: flex;
+  margin-top: 10px;
+  border-radius: 4px;
   padding: 8px 16px;
   border-radius: 2px;
   background-color: #3f51b5;
@@ -23,4 +27,8 @@ export const LoadMoreButton = styled.button`
   &:focus {
     background-color: #303f9f;
   }
+`;
+
+export const Container = styled.div`
+  display: flex;
 `;
