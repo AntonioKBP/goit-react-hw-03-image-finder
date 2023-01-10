@@ -12,7 +12,6 @@ const KEY = '31349139-c34332f5cc1455d1f889740ec';
 
 export class App extends Component {
   state = {
-    data: null,
     image: [],
     isLoading: false,
     showModal: false,
@@ -22,11 +21,6 @@ export class App extends Component {
     alt: '',
   };
 
-  // componentDidMount() {
-  //   console.log('mount');
-  //   this.fetchData({ page: 1 });
-  // }
-
   componentDidUpdate(_, prevState) {
     if (
       prevState.search !== this.state.search ||
@@ -34,6 +28,7 @@ export class App extends Component {
     ) {
       this.setState({ isLoading: true });
     }
+
     const { search } = this.state;
     if (search !== prevState.search) {
       this.fetchData({ search });
@@ -63,7 +58,8 @@ export class App extends Component {
     this.setState({ url, alt });
   };
 
-  fetchData = async ({ page = 1, search = '' }) => {
+  fetchData = async () => {
+    const { search, page } = this.state;
     try {
       const { data } = await axios.get(
         `https://pixabay.com/api/?q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
