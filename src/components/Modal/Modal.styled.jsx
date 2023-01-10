@@ -13,8 +13,8 @@ export const ModalOverlay = styled.div`
   z-index: 1200;
 `;
 export const ModalWindow = styled.div`
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
+  max-width: calc(100vw - 128px);
+  max-height: calc(100vh - 64px);
 `;
 export const ModalImage = styled.img`
   max-width: 800px;
@@ -22,6 +22,23 @@ export const ModalImage = styled.img`
 `;
 
 export const ModalBtn = styled.button`
-  width: 20px;
-  height: 20px;
+  /* width: 32px;
+height: 32px;
+  position: absolute;
+display: flex;
+justify-content: center;
+align-items: center;
+top: 16px;
+right: 32px;
+border: none;
+background: transparent;
+width: 64px;
+height: 64px;
+cursor: pointer;
+transition: all 250ms;
+color: 'blue;'
+
+&:hover, &:focus {
+  transform: scale(1.1);
+   */
 `;

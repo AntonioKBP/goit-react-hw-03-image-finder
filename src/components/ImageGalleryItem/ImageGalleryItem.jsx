@@ -4,13 +4,12 @@ export const ImageGalleryItem = ({ data, onHandleModal }) => {
   console.log(data);
   return (
     <>
-      {data.map((item, index) => (
-        <ListItem key={item.index}>
-          <Image
-            src={item.webformatURL}
-            alt={item.user}
-            onClick={() => onHandleModal()}
-          />
+      {data.map(item => (
+        <ListItem
+          key={item.id}
+          onClick={() => onHandleModal(item.largeImageURL, item.user)}
+        >
+          <Image src={item.webformatURL} alt={item.user} />
         </ListItem>
       ))}
     </>

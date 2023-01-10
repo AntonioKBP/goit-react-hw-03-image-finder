@@ -18,7 +18,8 @@ export class App extends Component {
     showModal: false,
     page: 1,
     search: '',
-    perPage: 12,
+    url: '',
+    alt: '',
   };
 
   // componentDidMount() {
@@ -57,8 +58,9 @@ export class App extends Component {
     }));
   };
 
-  handleModal = () => {
+  handleModal = (url, alt) => {
     this.toggleModal();
+    this.setState({ url, alt });
   };
 
   fetchData = async ({ page = 1, search = '' }) => {
@@ -77,11 +79,12 @@ export class App extends Component {
   };
 
   render() {
-    const { image, imageHits, isLoading, showModal } = this.state;
+    const { image, imageHits, isLoading, showModal, url, alt } = this.state;
 
     return (
       <>
         <SearchBar onSubmit={this.handleSearch} />
+        {isLoading && <Loader />}
         {
           <ImageGallery>
             {<ImageGalleryItem data={image} onHandleModal={this.handleModal} />}
@@ -90,8 +93,8 @@ export class App extends Component {
         {image.length === 0 || imageHits.totalHits === image.length || (
           <Button onClick={this.handleLoadMore} />
         )}
-        {isLoading && <Loader />}
-        {showModal && <Modal onClose={this.toggleModal} />}
+
+        {showModal && <Modal onClose={this.toggleModal} url={url} alt={alt} />}
       </>
     );
   }

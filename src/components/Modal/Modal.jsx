@@ -11,7 +11,11 @@ const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
   componentDidMount() {
-    // window.addEventListener('keydown');
+    window.addEventListener('keydown', this.handleKeydown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeydown);
   }
 
   handleKeydown = e => {
@@ -27,12 +31,13 @@ export class Modal extends Component {
     }
   };
   render() {
+    const { onClose, alt, url } = this.props;
     return createPortal(
       <>
         <ModalOverlay onclick={this.handleBackDrop}>
           <ModalWindow>
-            <ModalImage src="" alt="" />
-            <ModalBtn />
+            <ModalImage src={url} alt={alt} />
+            <ModalBtn type="button" onClick={onClose} />
           </ModalWindow>
         </ModalOverlay>
       </>,
