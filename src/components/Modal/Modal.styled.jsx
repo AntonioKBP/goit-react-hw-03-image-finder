@@ -23,23 +23,14 @@ export const ModalImage = styled.img`
 `;
 
 export const ModalBtn = styled.button`
-  /* width: 32px;
-height: 32px;
   position: absolute;
-display: flex;
-justify-content: center;
-align-items: center;
-top: 16px;
-right: 32px;
-border: none;
-background: transparent;
-width: 64px;
-height: 64px;
-cursor: pointer;
-transition: all 250ms;
-color: 'blue;'
+  top: 110px;
+  right: 32px;
+  transition: transform 250ms;
+  border-radius: 50%;
 
-&:hover, &:focus {
-  transform: scale(1.1);
-   */
+  &:hover,
+  &:focus {
+    background-color: 'red';
+  }
 `;

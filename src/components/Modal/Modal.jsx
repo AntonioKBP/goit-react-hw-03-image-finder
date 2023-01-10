@@ -1,11 +1,8 @@
+import PropTypes from 'prop-types';
+
 import { createPortal } from 'react-dom';
 import { Component } from 'react';
-import {
-  ModalOverlay,
-  ModalWindow,
-  ModalImage,
-  ModalBtn,
-} from './Modal.styled';
+import { ModalOverlay, ModalWindow, ModalBtn } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -31,17 +28,23 @@ export class Modal extends Component {
     }
   };
   render() {
-    const { onClose, alt, url } = this.props;
+    const { onClose, children } = this.props;
     return createPortal(
       <>
         <ModalOverlay onclick={this.handleBackDrop}>
-          <ModalWindow>
-            <ModalImage src={url} alt={alt} />
-            <ModalBtn type="button" onClick={onClose} />
-          </ModalWindow>
+          <ModalBtn type="button" onClick={onClose}>
+            x
+          </ModalBtn>
+          <ModalWindow>{children}</ModalWindow>
         </ModalOverlay>
       </>,
       modalRoot
     );
   }
 }
+
+export default Modal;
+
+Modal.propTypes = {
+  children: PropTypes.object.isRequired,
+};

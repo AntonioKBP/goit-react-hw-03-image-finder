@@ -1,50 +1,76 @@
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Component } from 'react';
+
 import { SearchBar } from './SearchBar/SearchBar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
+import { ModalInner } from './Modal/ModalInner';
 import { Loader } from './Loader/Loader';
-import { Component } from 'react';
+import { Toast } from './Toast/ToastContainer';
 
-import { requestHTTP } from './services/services';
+// import { requestHTTP } from './services/services';
+
+const BASE_URL = 'https://pixabay.com/api/?';
+const KEY = '31349139-c34332f5cc1455d1f889740ec';
 
 export class App extends Component {
   state = {
     image: [],
+    search: '',
     imageHits: [],
     isLoading: false,
     showModal: false,
     page: 1,
-    search: '',
     url: '',
     alt: '',
   };
 
-  handleSearch = async search => {
-    this.setState({ isLoading: true });
+  async componentDidUpdate(_, prevState) {
+    const { page, search } = this.state;
+    if (
+      prevState.search !== this.state.search ||
+      prevState.page !== this.state.page
+    ) {
+      this.setState({ isLoading: true });
+      try {
+        const { data } = await axios.get(
+          `${BASE_URL}q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
+        );
+
+        this.setState(
+          (prevState = {
+            image: [...prevState.image, ...data.hits],
+            imageHits: data,
+          })
+        );
+
+        if (this.state.image.length === 0) {
+          toast.success(`We found ${data.total} images`);
+        }
+
+        if (data.total === 0) {
+          this.setState({ image: [] });
+          toast.info('No images has been found');
+        }
+      } catch (error) {
+      } finally {
+        this.setState({ isLoading: false });
+      }
+    }
+  }
+
+  handleSearch = search => {
     this.setState({ search, page: 1, image: [] });
   };
 
-  componentDidUpdate(_, prevState) {
-    const prevSearch = prevState.search;
-    const nextSearch = this.state.search;
-    if (prevSearch !== nextSearch) {
-      this.loadDataImg();
-    }
-  }
-  loadDataImg = async () => {
-    const { search, page } = this.state;
-    try {
-      const data = await requestHTTP(search, page);
-      data.hits.map(items => {
-        return this.setState(({ image }) => ({ image: [...image, items] }));
-      });
-      this.setState(({ page }) => ({ page: page + 1 }));
-    } catch (error) {
-      console.log('Error', error);
-    } finally {
-      this.setState({ isLoading: false });
-    }
+  loadMore = async () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
   toggleModal = () => {
@@ -71,11 +97,16 @@ export class App extends Component {
           </ImageGallery>
         }
         {isLoading && <Loader />}
+        <Toast />
         {image.length === 0 || imageHits.totalHits === image.length || (
-          <Button onClick={this.loadDataImg} />
+          <Button onClick={this.loadMore} />
         )}
 
-        {showModal && <Modal onClose={this.toggleModal} url={url} alt={alt} />}
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <ModalInner url={url} alt={alt} />
+          </Modal>
+        )}
       </>
     );
   }
