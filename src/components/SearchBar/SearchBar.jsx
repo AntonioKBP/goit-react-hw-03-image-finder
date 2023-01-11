@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { ReactComponent as Icon } from '../Icons/search.svg';
 
-import { SearchButton, Form, Header, Input } from './Searchbar.styled';
+import { SearchButton, Form, Header, Input } from './SearchBar.styled';
 
 export class SearchBar extends Component {
   state = {

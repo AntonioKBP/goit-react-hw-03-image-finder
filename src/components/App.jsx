@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Component } from 'react';
 import { Button } from './Button/Button';
-import { SearchBar } from './Searchbar/Searchbar';
+import { SearchBar } from './Searchbar/SearchBar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 import { Loader } from './Loader/Loader';
