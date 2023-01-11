@@ -29,6 +29,6 @@ export const LoadMoreButton = styled.button`
   }
 `;
 
-export const Container = styled.div`
+export const BtnContainer = styled.div`
   display: flex;
 `;

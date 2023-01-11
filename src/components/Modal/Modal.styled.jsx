@@ -12,10 +12,12 @@ export const ModalOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1200;
 `;
+
 export const ModalWindow = styled.div`
   max-width: calc(100vw - 128px);
   max-height: calc(100vh - 64px);
 `;
+
 export const ModalImage = styled.img`
   max-width: 800px;
   max-height: 600px;
@@ -24,14 +26,20 @@ export const ModalImage = styled.img`
 
 export const ModalBtn = styled.button`
   position: absolute;
-  top: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 16px;
   right: 32px;
-  background-color: 'aqua';
-  transition: transform 250ms;
-  border-radius: 50%;
+  border: none;
+  background: transparent;
+  width: 64px;
+  height: 64px;
   cursor: pointer;
+  transition: all 250ms;
+
   &:hover,
   &:focus {
-    background-color: 'red';
+    transform: scale(1.1);
   }
 `;

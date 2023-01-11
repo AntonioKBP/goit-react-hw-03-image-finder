@@ -14,7 +14,7 @@ export const Loader = () => {
         visible={true}
         ariaLabel="three-circles-rotating"
         outerCircleColor="blue"
-        innerCircleColor="red"
+        innerCircleColor="yellow"
         middleCircleColor="blue"
       />
     </LoaderDiv>

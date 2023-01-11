@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+
 import { ModalImage } from './Modal.styled';
 
 export const ModalInner = ({ url, alt }) => {

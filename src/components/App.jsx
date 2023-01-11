@@ -1,31 +1,30 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Component } from 'react';
 
-import { SearchBar } from './SearchBar/SearchBar';
+import { Component } from 'react';
+import { Button } from './Button/Button';
+import { SearchBar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
-import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
+
+import { Container } from './App.styled';
+import { Toast } from './Toast/ToastContainer';
 import { Modal } from './Modal/Modal';
 import { ModalInner } from './Modal/ModalInner';
-import { Loader } from './Loader/Loader';
-import { Toast } from './Toast/ToastContainer';
-import { Container } from './App.styled';
 
-// import { requestHTTP } from './services/services';
-
-const BASE_URL = 'https://pixabay.com/api/?';
 const KEY = '31349139-c34332f5cc1455d1f889740ec';
+const BASE_URL = 'https://pixabay.com/api/?';
 
 export class App extends Component {
   state = {
     image: [],
     search: '',
-    imageHits: [],
     isLoading: false,
-    showModal: false,
     page: 1,
+    imageHits: [],
+    showModal: false,
     url: '',
     alt: '',
   };
@@ -35,8 +34,8 @@ export class App extends Component {
   };
 
   loadMore = async () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
+    this.setState(pS => ({
+      page: pS.page + 1,
     }));
   };
 
@@ -52,12 +51,10 @@ export class App extends Component {
           `${BASE_URL}q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
         );
 
-        this.setState(
-          (prevState = {
-            image: [...prevState.image, ...data.hits],
-            imageHits: data,
-          })
-        );
+        this.setState(prevState => ({
+          image: [...prevState.image, ...data.hits],
+          imageHits: data,
+        }));
 
         if (this.state.image.length === 0) {
           toast.success(`We found ${data.total} images`);
@@ -65,9 +62,10 @@ export class App extends Component {
 
         if (data.total === 0) {
           this.setState({ image: [] });
-          toast.info('No images has been found');
         }
       } catch (error) {
+        console.log(error);
+        toast.error('Cannot process your request');
       } finally {
         this.setState({ isLoading: false });
       }
@@ -75,18 +73,17 @@ export class App extends Component {
   }
 
   toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
+    this.setState(pS => ({
+      showModal: !pS.showModal,
     }));
   };
-
   handleModal = (url, alt) => {
     this.toggleModal();
     this.setState({ url, alt });
   };
 
   render() {
-    const { image, imageHits, isLoading, showModal, url, alt } = this.state;
+    const { isLoading, image, imageHits, showModal, url, alt } = this.state;
 
     return (
       <Container>
@@ -94,19 +91,23 @@ export class App extends Component {
 
         {
           <ImageGallery>
-            {<ImageGalleryItem data={image} onHandleModal={this.handleModal} />}
+            {
+              <ImageGalleryItem
+                image={image}
+                onhandleModal={this.handleModal}
+              />
+            }
           </ImageGallery>
         }
         {isLoading && <Loader />}
-        <Toast />
-        {image.length === 0 || imageHits.totalHits === image.length || (
-          <Button onClick={this.loadMore} />
-        )}
-
+        {<Toast />}
         {showModal && (
           <Modal onClose={this.toggleModal}>
             <ModalInner url={url} alt={alt} />
           </Modal>
+        )}
+        {image.length === 0 || imageHits.totalHits === image.length || (
+          <Button onClick={this.loadMore} />
         )}
       </Container>
     );

@@ -1,17 +1,15 @@
 import PropTypes from 'prop-types';
+import { Image, ListItem } from './ImageGalleryItem.styled';
 
-import { ListItem, Image } from './ImageGalleryItem.styled';
-
-export const ImageGalleryItem = ({ data, onHandleModal }) => {
-  console.log(data);
+export const ImageGalleryItem = ({ image, onhandleModal }) => {
   return (
     <>
-      {data.map(item => (
+      {image.map(img => (
         <ListItem
-          key={item.id}
-          onClick={() => onHandleModal(item.largeImageURL, item.user)}
+          key={img.id}
+          onClick={() => onhandleModal(img.largeImageURL, img.user)}
         >
-          <Image src={item.webformatURL} alt={item.user} />
+          <Image src={img.webformatURL} alt={img.user} />
         </ListItem>
       ))}
     </>
@@ -19,11 +17,5 @@ export const ImageGalleryItem = ({ data, onHandleModal }) => {
 };
 
 ImageGalleryItem.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object.isRequired),
+  image: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
-
-// // {
-//   // /* <ListItem>
-//   //     <Image src="" alt="" />
-//   //   </ListItem> */
-// }

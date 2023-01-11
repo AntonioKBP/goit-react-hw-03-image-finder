@@ -1,6 +1,8 @@
-import { Header, Form, SearchButton, Label, Input } from './SearchBar.styled';
-import { ReactComponent as Icon } from '../Icons/search.svg';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
+import { ReactComponent as Icon } from '../Icons/search.svg';
+
+import { SearchButton, Form, Header, Input } from './Searchbar.styled';
 
 export class SearchBar extends Component {
   state = {
@@ -15,8 +17,12 @@ export class SearchBar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.onSubmit(this.state.value);
-    this.setState({ value: '' });
+    this.reset();
   };
+
+  reset() {
+    this.setState({ name: '' });
+  }
 
   render() {
     const { value } = this.state;
@@ -29,18 +35,21 @@ export class SearchBar extends Component {
             </span>
           </SearchButton>
 
-          <Label>
-            <Input
-              type="text"
-              autocomplete="off"
-              autoFocus
-              placeholder="Search images and photos"
-              value={value}
-              onChange={this.handleChange}
-            />
-          </Label>
+          <Input
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+            onChange={this.handleChange}
+            name="name"
+            value={value}
+          />
         </Form>
       </Header>
     );
   }
 }
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

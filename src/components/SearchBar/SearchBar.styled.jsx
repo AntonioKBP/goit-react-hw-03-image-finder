@@ -8,7 +8,7 @@ export const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 64px;
+  height: 64px;
   padding-right: 24px;
   padding-left: 24px;
   padding-top: 12px;
@@ -27,6 +27,7 @@ export const Form = styled.form`
   background-color: #fff;
   border-radius: 3px;
   overflow: hidden;
+  position: relative;
 `;
 
 export const SearchButton = styled.button`
@@ -47,31 +48,34 @@ export const SearchButton = styled.button`
     opacity: 1;
   }
 `;
-
-export const Label = styled.label`
-  /* position: absolute; */
-  /* width: 1px;
-  height: 1px; */
-  /* padding: 0;
+export const SearchFormButtonLabel = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   clip-path: inset(50%);
-  border: 0; */
+  border: 0;
 `;
-export const Span = styled.span``;
 
 export const Input = styled.input`
   display: inline-block;
   width: 100%;
-
+  height: 48px;
+  border: 0;
   font-size: 20px;
-  border: none;
+  margin-left: 10px;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
   outline: none;
-  padding: 5px;
 
-  &:placeholder {
-    font: inherit;
-    font-size: 18px;
+  &:hover {
+    opacity: 1;
   }
 `;
