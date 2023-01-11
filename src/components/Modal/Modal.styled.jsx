@@ -28,7 +28,7 @@ export const ModalBtn = styled.button`
   right: 32px;
   transition: transform 250ms;
   border-radius: 50%;
-
+  cursor: pointer;
   &:hover,
   &:focus {
     background-color: 'red';
