@@ -10,7 +10,7 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
-  overflow: hidden;
+  z-index: 1200;
 `;
 export const ModalWindow = styled.div`
   max-width: calc(100vw - 128px);
@@ -26,6 +26,7 @@ export const ModalBtn = styled.button`
   position: absolute;
   top: 110px;
   right: 32px;
+  background-color: 'aqua';
   transition: transform 250ms;
   border-radius: 50%;
   cursor: pointer;

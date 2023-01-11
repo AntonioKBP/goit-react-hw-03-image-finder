@@ -11,6 +11,7 @@ import { Modal } from './Modal/Modal';
 import { ModalInner } from './Modal/ModalInner';
 import { Loader } from './Loader/Loader';
 import { Toast } from './Toast/ToastContainer';
+import { Container } from './App.styled';
 
 // import { requestHTTP } from './services/services';
 
@@ -27,6 +28,16 @@ export class App extends Component {
     page: 1,
     url: '',
     alt: '',
+  };
+
+  handleSearch = search => {
+    this.setState({ search, page: 1, image: [] });
+  };
+
+  loadMore = async () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
   async componentDidUpdate(_, prevState) {
@@ -63,16 +74,6 @@ export class App extends Component {
     }
   }
 
-  handleSearch = search => {
-    this.setState({ search, page: 1, image: [] });
-  };
-
-  loadMore = async () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
-
   toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
@@ -88,7 +89,7 @@ export class App extends Component {
     const { image, imageHits, isLoading, showModal, url, alt } = this.state;
 
     return (
-      <>
+      <Container>
         <SearchBar onSubmit={this.handleSearch} />
 
         {
@@ -107,7 +108,7 @@ export class App extends Component {
             <ModalInner url={url} alt={alt} />
           </Modal>
         )}
-      </>
+      </Container>
     );
   }
 }

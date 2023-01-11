@@ -5,7 +5,7 @@ export const Toast = () => {
   return (
     <ToastContainer
       position="bottom-right"
-      autoClose={5000}
+      autoClose={2500}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
